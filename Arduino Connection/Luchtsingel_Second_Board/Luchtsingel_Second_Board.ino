@@ -1,22 +1,12 @@
-// Wire Slave Receiver
-// by Nicholas Zambetti <http://www.zambetti.com>
-
-// Demonstrates use of the Wire library
-// Receives data as an I2C/TWI slave device
-// Refer to the "Wire Master Writer" example for use with this
-
-// Created 29 March 2006
-
-// This example code is in the public domain.
-
-
-
 #include <Wire.h>
+
+int Buzzer1 = 9;
 
 void setup() {
   Wire.begin(8);                // join i2c bus with address #8
   Wire.onReceive(receiveEvent); // register event
   Serial.begin(9600);           // start serial for output
+  pinMode(Buzzer1, OUTPUT);
 }
 
 void loop() {
@@ -32,4 +22,16 @@ void receiveEvent(int howMany) {
   }
   int x = Wire.read();    // receive byte as an integer
   Serial.println(x);         // print the integer
+  
+   if (x == 3){
+    // play the Tone
+    tone(Buzzer1,1600,200);
+    delay(500);
+   }
+
+   if (x == 55){
+    // play the Tone
+    tone(Buzzer1,200,200);
+    delay(500);    
+   }
 }

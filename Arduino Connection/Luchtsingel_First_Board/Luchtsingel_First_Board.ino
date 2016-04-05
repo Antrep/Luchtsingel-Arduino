@@ -1,29 +1,57 @@
-// Wire Master Writer
-// by Nicholas Zambetti <http://www.zambetti.com>
-
-// Demonstrates use of the Wire library
-// Writes data to an I2C/TWI slave device
-// Refer to the "Wire Slave Receiver" example for use with this
-
-// Created 29 March 2006
-
-// This example code is in the public domain.
-
-
 #include <Wire.h>
+
+
+// set pin numbers:
+const int buttonPinOne = 4;     // the number of the first pushbutton pin
+const int buttonPinTwo = 5;     // the number of the second pushbutton pin
+
+int Buzzer1 = 9;
+
+// variables that will change:
+int buttonStateOne = 0;         // variable for reading the first pushbutton status
+int buttonStateTwo = 0;         // variable for reading the second pushbutton status
+
 
 void setup() {
   Wire.begin(); // join i2c bus (address optional for master)
+
+  // initialize the piezo as output:
+  pinMode(Buzzer1, OUTPUT);  
+  
+  // initialize the first pushbutton pin as an input:
+  pinMode(buttonPinOne, INPUT);  
+  
+  // initialize the first pushbutton pin as an input:
+  pinMode(buttonPinTwo, INPUT);     
 }
 
-byte x = 0;
 
 void loop() {
   Wire.beginTransmission(8); // transmit to device #8
-  Wire.write("x is ");        // sends five bytes
-  Wire.write(x);              // sends one byte
-  Wire.endTransmission();    // stop transmitting
 
-  x++;
-  delay(500);
+  // read the state of button1:
+  buttonStateOne = digitalRead(buttonPinOne);
+
+  // read the state of button2:
+  buttonStateTwo = digitalRead(buttonPinTwo);
+  
+  // check if button1 is pressed
+  // if button1 is pressed, buttonStateOne is set to HIGH:
+  if (buttonStateOne == HIGH) {     
+    byte x = 3;
+    Wire.write(x);
+    tone (Buzzer1, 
+  }   
+
+
+  // check if button2 is pressed
+  // if button2 is pressed, buttonStateTwo is set to HIGH
+  if (buttonStateTwo == HIGH) {
+    byte x = 55;
+    Wire.write(x);              // sends the variable through bytes
+  }
+
+
+  Wire.endTransmission();    // stop transmitting
+  delay(50);                 // delay to avoid bouncing
 }
